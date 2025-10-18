@@ -1,5 +1,6 @@
 package com.eazybytes.springsecsection1.filter;
 
+import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,8 +13,10 @@ import java.io.IOException;
 public class CsrfCookieFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        CsrfToken csrfToken=(CsrfToken) request.getAttribute(CsrfToken.class.getName());
+        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
         csrfToken.getToken();
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
     }
+
+
 }

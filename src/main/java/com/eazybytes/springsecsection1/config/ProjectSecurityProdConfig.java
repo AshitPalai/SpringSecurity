@@ -2,7 +2,10 @@ package com.eazybytes.springsecsection1.config;
 
 
 import com.eazybytes.springsecsection1.exceptionhandling.CustomBasicAuthenticationEntryPoint;
+import com.eazybytes.springsecsection1.filter.AuthoritiesLoggingAfterFilter;
+import com.eazybytes.springsecsection1.filter.AuthoritiesLoggingAtFilter;
 import com.eazybytes.springsecsection1.filter.CsrfCookieFilter;
+import com.eazybytes.springsecsection1.filter.RequestValidationBeforeFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,6 +54,9 @@ public class ProjectSecurityProdConfig {
                         .ignoringRequestMatchers("/contact", "/register")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
+                .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
+                .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
                 .redirectToHttps((https) -> https.requestMatchers(AnyRequestMatcher.INSTANCE))
 
                 .authorizeHttpRequests((requests) -> requests
